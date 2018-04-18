@@ -1,0 +1,143 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf100
+{\fonttbl\f0\fswiss\fcharset0 ArialMT;\f1\froman\fcharset0 TimesNewRomanPSMT;\f2\fnil\fcharset134 PingFangSC-Regular;
+\f3\fnil\fcharset0 ArialUnicodeMS;}
+{\colortbl;\red255\green255\blue255;\red34\green34\blue34;}
+{\*\expandedcolortbl;;\csgenericrgb\c13333\c13333\c13333;}
+\margl1440\margr1440\vieww19540\viewh16380\viewkind0
+\deftab720
+\pard\pardeftab720\ri340\partightenfactor0
+
+\f0\fs26 \cf2 Assignment #1   (
+\i Not in this course
+\i0 )\
+\pard\pardeftab720\ri340\partightenfactor0
+
+\fs24 \cf2 Name: Yuexi Li \
+\pard\pardeftab720\ri340\partightenfactor0
+
+\f1 \cf0 \
+\pard\pardeftab720\ri340\partightenfactor0
+
+\f0\b\fs19 \cf2 Requirements:
+\f1\fs24 \cf0 \
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+
+\f0\b0\fs19 \cf2 ===\uc0\u8232 Input Data Format:\u8232 <age><,><gender><,><city><,><state><,><country><,><salary>\u8232 \u8232 ===\u8232 20,Male,Ames,IA,USA,25000\u8232 24,Male,Ames,IA,USA,29000\u8232 24,Female,Sunnyvale,CA,USA,57000\u8232 40,Male,Ames,IA,USA,43000\u8232 40,Male,Boone,IA,USA,44000\u8232 40,Female,Cupertino,CA,USA,48000\u8232 20,Male,Boone,IA,USA,24000\u8232 20,Female,Ames,IA,USA,26000\u8232 24,Male,Boone,IA,USA,34000\
+\uc0\u8232 ===\u8232 Expected output:\u8232 \u8232 \'a0 Key\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0    Value\u8232 \'a0 ==================\'a0 \'a0 \'a0 ================\u8232 \'a0 <age>\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0   \'a0<average-salary>\u8232 \'a0 "unique-cities"\'a0 \'a0 \'a0 \'a0 \'a0<list-of-unique-cities>\u8232 \u8232 ===\
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+
+\b \cf2 MapReduce Program:\
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+
+\b0 \cf2 Map function input
+\f2 \'a3\'ba
+\f0 \
+\pard\pardeftab720\ri0\partightenfactor0
+
+\fs18 \cf2 Key(Record Number)             Value(Record)\
+===========  		===========================\
+\pard\pardeftab720\ri-18048\partightenfactor0
+\cf2 1                       		20,Male,Ames,IA,USA,25000\uc0\u8232 2                       		24,Male,Ames,IA,USA,29000\u8232 3                     	 	 24,Female,Sunnyvale,CA,USA,57000\u8232 4                      	 	40,Male,Ames,IA,USA,43000\u8232 5                      	 	40,Male,Boone,IA,USA,44000\u8232 6                      	 	40,Female,Cupertino,CA,USA,48000\u8232 7                      	 	20,Male,Boone,IA,USA,24000\u8232 8                      	 	20,Female,Ames,IA,USA,26000\u8232 9                       		24,Male,Boone,IA,USA,34000
+\fs24 \uc0\u8232 
+\fs19 \cf2 	
+\f3 \
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+\cf2 Map(key, values) \{\
+	tokens=values.split(\'93,\'94)\
+	age=tokens[0]\
+	salary=tokens[5]\
+	city=tokens[2]	\
+\pard\pardeftab720\fi720\ri340\sl240\sa120\partightenfactor0
+\cf2 emit (age, salary)\
+emit (\'93unique-cities\'94, city)\
+\pard\pardeftab720\li720\fi720\ri340\sl240\sa120\partightenfactor0
+\cf2 \}\
+\pard\pardeftab720\fi720\ri340\sl240\sa120\partightenfactor0
+\cf2 \}
+\f0 \
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+\cf2 The Output of Map function: 	      \
+\pard\pardeftab720\partightenfactor0
+
+\fs18 \cf0 Key(age)     Values (salary)\
+=======     ============\
+20                24000\
+20                25000\
+20                26000\
+24                29000\
+24                34000\
+24                57000\
+40                43000\
+40                44000\
+40                48000\
+\
+Key(\'91unique-cities\'92)     Values (city)\
+=======                   ============\
+unique-cities               Ames\
+unique-cities               Ames\
+unique-cities               Sunnyvale\
+unique-cities               Boone\
+unique-cities               Ames\
+unique-cities               Boone\
+unique-cities               Cupertino\
+unique-cities               Boone\
+unique-cities               Ames\
+unique-cities               Boone
+\fs24 \
+
+\fs19 \cf2 \
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+\cf2 The output of Sort() and shuffle() function:\
+\pard\pardeftab720\ri0\partightenfactor0
+
+\fs18 \cf0 key                   values\
+======            ============================\
+\pard\pardeftab720\partightenfactor0
+\cf0 20                    [24000, 25000, 26000)]\
+24                    [29000, 34000, 57000)]\
+40                    [43000, 44000, 48000)]\
+unique-cities    [Ames, Sunnyvale, Boone, Ames, Boone, Cupertino, Boone, Ames, Boone]
+\fs24 \
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+
+\fs19 \cf2 \
+Reduce() function:\
+Reduce(key, values) \{\
+\pard\pardeftab720\fi720\ri340\sl240\sa120\partightenfactor0
+\cf2 sum = 0\
+size=0 \
+unique_cities= set()\
+if key==\'93unique-cities\'94 \{\
+	for element in values: \{\
+		if element not in unique_cities() :\{\
+			unique_cities= unique_cities.add(element)   #element is the name of city\
+			\}\
+		 \}\
+\
+if key!=\'93unique=cities\'94 \{\
+	for element in values: \{\
+\pard\pardeftab720\li720\fi720\ri340\sl240\sa120\partightenfactor0
+\cf2 	size+ = 1 \
+	sum=sum+element   #element is integer\
+	\}\
+\}\
+\pard\pardeftab720\fi720\ri340\sl240\sa120\partightenfactor0
+\cf2 average-salary= sum/size \
+emit( key, average-salary
+\f2 )
+\f0  \
+emit( \'93unique-citites\'94 , unique_cities
+\f2 \'a3\'a9
+\f0  \
+\}\
+\pard\pardeftab720\ri340\sl240\sa120\partightenfactor0
+\cf2 \
+Expected output of the Mapreduce Algorithm:\'a0\
+<20>    <25000>  \
+<24>    <40000>  \
+<40>    <45000>  \
+"unique-citites\'94 \'a0<Ames,Boones,Sunnyvale, Cupertino> \
+\
+\
+ \
+}
