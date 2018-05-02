@@ -6,4 +6,4 @@ Assignment list:
 
 [Assignment 2: Word Count Practice](https://github.com/YuexiSC/Assignment_Personal/blob/master/Assignment2.ipynb)
 
-[Assignment 3: ]
+[Assignment 3: ](https://github.com/YuexiSC/Assignment_Personal/blob/master/Assignment%233%20Bigrams.ipynb)
